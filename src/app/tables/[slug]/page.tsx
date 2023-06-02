@@ -1,6 +1,6 @@
 import { getTableData } from "@/utils/aws/db";
 
-export default async function Home({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
     const data = await getTableData(params.slug);
 
     return (

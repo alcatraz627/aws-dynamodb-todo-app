@@ -1,12 +1,13 @@
-import { ReactNode } from "react";
+import React from "react";
 
-export default async function Home({ children }: { children: ReactNode }) {
+const Page = async () => {
     return (
         <main className="p-4">
             <div className={`bg-gray-100 m-auto max-w-4xl`}>
-                {children}
-                {/* <pre>{JSON.stringify(data, undefined, 4)}</pre> */}
+                Home Page
             </div>
         </main>
     );
-}
+};
+
+export default Page;
