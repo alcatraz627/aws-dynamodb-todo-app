@@ -1,12 +1,15 @@
-import type { Metadata } from "next";;
-import { Open_Sans } from "next/font/google";
+/* eslint-disable @next/next/no-img-element */
+import type { Metadata } from "next";
+import { Noto_Sans } from "next/font/google";
 import type { Author } from "next/dist/lib/metadata/types/metadata-types";
 import { cx } from "@/utils/style";
 import { getTables } from "@/utils/aws/db";
-import Link from "next/link";
-import "../style/globals.css"
+import "../style/globals.css";
+import { Navbar, NavbarProps } from "@/components/navbar/navbar.component";
+import Image from "next/image";
+import { NavbarLink } from "@/components/navbar/navbar-link.component";
 
-const open_sans = Open_Sans({ subsets: ["latin"] });
+const font = Noto_Sans({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
     title: "Personal Tracker",
@@ -16,6 +19,7 @@ export const metadata: Metadata = {
         name: "Aakarsh Chopra",
         url: "https://github.com/alcatraz627",
     } as Author,
+    viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default async function RootLayout({
@@ -23,27 +27,40 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { TableNames = [] } = await getTables();
+    const links: NavbarProps["links"] = [
+        {
+            content: (
+                <NavbarLink
+                    iconUrl="/icons/table.svg"
+                    text="Tables"
+                    iconProps={{ className: "w-6" }}
+                />
+            ),
+            href: "/tables",
+        },
+        {
+            content: (
+                <NavbarLink
+                    iconUrl="/icons/column.svg"
+                    text="Schemas"
+                    iconProps={{ className: "w-6" }}
+                />
+            ),
+            href: "/schemas",
+        },
+    ];
 
     return (
-        <html lang="en">
+        <html lang="en" data-theme="emerald">
             <body
                 className={cx(
-                    open_sans.className,
-                    "flex flex-col h-screen"
+                    font.className,
+                    "flex flex-col h-screen",
+                    "bg-white"
                     // "border-2 border-red-500 border-solid"
                 )}
             >
-                <nav className="w-full text-white bg-blue-700 bg-opacity-80 p-4 border-0 border-purple-700 border-solid border-opacity-50">
-                    <div className="flex flex-row justify-between">
-                        <h3>Personal Tracker</h3>
-                        {TableNames.map((name) => (
-                            <Link key={name} href={`/tables/${name}`}>
-                                /{name}
-                            </Link>
-                        ))}
-                    </div>
-                </nav>
+                <Navbar title="Personal Tracker" links={links} />
 
                 {children}
             </body>
